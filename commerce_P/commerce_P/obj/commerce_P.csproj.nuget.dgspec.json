@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Youcode\\Desktop\\E-commerce-\\commerce_P\\commerce_P\\commerce_P.csproj": {}
+    "C:\\Users\\youcode\\Desktop\\E-commerce-\\commerce_P\\commerce_P\\commerce_P.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Youcode\\Desktop\\E-commerce-\\commerce_P\\commerce_P\\commerce_P.csproj": {
+    "C:\\Users\\youcode\\Desktop\\E-commerce-\\commerce_P\\commerce_P\\commerce_P.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Youcode\\Desktop\\E-commerce-\\commerce_P\\commerce_P\\commerce_P.csproj",
+        "projectUniqueName": "C:\\Users\\youcode\\Desktop\\E-commerce-\\commerce_P\\commerce_P\\commerce_P.csproj",
         "projectName": "commerce_P",
-        "projectPath": "C:\\Users\\Youcode\\Desktop\\E-commerce-\\commerce_P\\commerce_P\\commerce_P.csproj",
-        "packagesPath": "C:\\Users\\Youcode\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Youcode\\Desktop\\E-commerce-\\commerce_P\\commerce_P\\obj\\",
+        "projectPath": "C:\\Users\\youcode\\Desktop\\E-commerce-\\commerce_P\\commerce_P\\commerce_P.csproj",
+        "packagesPath": "C:\\Users\\youcode\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\youcode\\Desktop\\E-commerce-\\commerce_P\\commerce_P\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\Youcode\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\youcode\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -81,7 +81,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.100\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.201\\RuntimeIdentifierGraph.json"
         }
       }
     }
