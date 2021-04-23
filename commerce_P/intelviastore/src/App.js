@@ -1,29 +1,59 @@
-import React from 'react';
-import './App.css';
+
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import Dashboard from './components/Dashboard/Dashboard';
 import Preferences from './components/Preferences/Preferences';
-import  RegisterForm from './components/Login/Login';
+import RegisterForm from './components/Login/Login';
+import React , {useState , useEffect} from "react"
+import AuthContext from './Auth/context';
+import authStorage from './Auth/storage';
+
+
+ 
+
 
 
 function App() {
+
+
+
+  const [user , setUser] = useState();
+
+const restoreUser = async () => {
+    const user = await authStorage.getUser();
+    if (user) setUser(user);
+    
+  };
+
+  useEffect(()=>{
+      restoreUser();
+  }, [])
+
   return (
+
+
+<AuthContext.Provider value={{user , setUser }} >
     <div className="wrapper">
-      <h1>Application</h1>
       <BrowserRouter>
-        <Switch>
-          <Route path='/Dashboard'>
-            <Dashboard />
+
+    {user ?
+     <Switch>  
+          <Route path=''>
+               <Dashboard />
           </Route>
-          <Route path='/login'>
-            <RegisterForm />
+            <Route path='/Preferences'>
+               <Preferences/>
           </Route>
-          <Route path='/Preferences'>
-            <Preferences />
-          </Route>
-        </Switch>
+     </Switch> :
+     <Switch>
+            <Route path=''>
+               <RegisterForm />
+            </Route>
+     </Switch> 
+     
+           }
       </BrowserRouter>
     </div>
+    </AuthContext.Provider>
   );
 }
 

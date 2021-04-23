@@ -1,14 +1,17 @@
-import React, {useState,Component} from "react";
+
+import React, {useState} from "react";
+// import logo from './logo.svg';
+
 import {useSpring, animated} from 'react-spring';
-import { useFormik } from 'formik';
+import useAuth from '../../Auth/useAuth';
 
 
 
 
 
 
-function App() {
 
+function Auth() {
 
 
 
@@ -38,27 +41,60 @@ const registerBtnProps = useSpring({borderBottom :registrationFormStatus ?  'sol
               <animated.button style={registerBtnProps} onClick={registerClicked } id="registerBtn">Register</animated.button>
             </div>
             <div className="form-group">
-            <animated.form action='' id='loginform'style={loginProps} ><LoginForm/></animated.form> 
+            <animated.form action='' id='loginform'style={loginProps} ><LoginForm /></animated.form> 
             <animated.form action='' id='registerform'style={registerProps} ><RegisterForm/></animated.form> 
             </div>
             <animated.div className="forgot-panel" style={loginProps} id="forgot-panel">
-              <a href="#">Forgot your password </a>
+              <a href=" ">Forgot your password </a>
             </animated.div>
         </div>
     </div>
   );
 }
 
-function LoginForm(){
 
+//8888888888888888888888888888888888888888888888888888888888888888888888888
+
+
+function LoginForm( ){
+
+const Auth = useAuth();
+
+  function validation () {
+    const UsernameErr = {};
+    const PasswordErr={};
+    let isValid = true;
+
+    if(Username.trim().length<4){
+      UsernameErr.UsernameShort = "Invalid user name";
+      isValid =false;
+    }
+
+    if(Password.trim().length<5){
+      PasswordErr.PasswordSolve = "Invalid Password ";
+      isValid =false;
+    }
+
+    setUserNameErr(UsernameErr);
+    setPasswordErr(PasswordErr);
+
+    if(isValid){
+      login();
+    }
+    return isValid;
+
+  }
 
     const [Username , setfullName] = useState('');
     const [ Password , setpassword ] = useState('');
 
-    const  login = () => {
-  
+    const [UsernameErr , setUserNameErr] = useState({});
+    const [PasswordErr , setPasswordErr] =useState({});
 
-console.log({Username , Password})
+    const  login = () => {
+
+        console.log({Username , Password})
+
 return fetch('http://localhost:51858/api/authenticate/login', {
         method: 'POST',
         headers: {
@@ -66,17 +102,31 @@ return fetch('http://localhost:51858/api/authenticate/login', {
         },
         body: JSON.stringify({Username , Password})
       })
-        .then(data => data.json()).then(data => console.log(data))
+        .then(data => data.json()).then(data =>  Auth.logIn(data.token) )
+
+        
     }
 
-  return(
+
+
+  return( 
 
       <React.Fragment> 
+
       <label for='username'  >USERNAME</label>
       <input type='text' id='username' value = {Username} onChange={name => setfullName(name.currentTarget.value)} />
+      {Object.keys(UsernameErr).map((key)=>{
+           return <div style={{color : "red" , fontSize: 15}}> {UsernameErr[key]}</div>
+         })}
+
+
       <label for='password'  >PASSWORD</label>
-      <input type='text' id='password' value={Password} onChange={pass => setpassword(pass.currentTarget.value)}  />
-      <input onClick={login}  value='submit' className='submit'/>
+      <input type='password' id='password' value={Password} onChange={pass => setpassword(pass.currentTarget.value)}  />
+      {Object.keys(PasswordErr).map((key)=>{
+           return <div style={{color : "red" , fontSize: 15  }}> {PasswordErr[key]}</div>
+            })}
+
+      <input onClick={validation}  value='submit' className='submit'/>
       </React.Fragment>
    
   )
@@ -85,15 +135,68 @@ return fetch('http://localhost:51858/api/authenticate/login', {
 //8888888888888888888888888888888888888888888888888888888888888888888888888888888888
 
 
+function RegisterForm () {
 
-function RegisterForm(){
 
-    const [Username , setfullName] = useState('');
+
+    const [Username , setUserName] = useState('');
     const [Email , setemail] = useState('');
     const [ Password , setpassword ] = useState('');
 
+    const [UsernameErr , setUserNameErr] = useState({});
+    const [EmailErr , setemailErr] = useState({});
+    const [PasswordErr , setPasswordErr] =useState({});
+  
+    const onSubmit = (e)=>{
+      e.preventDefault();
 
-const  register = () => {
+      const isValid = formValidation();
+
+      //return api wen valid ..
+      if(isValid){
+        setUserName("");
+        setemail("");
+        setUserName("");
+      }
+    }
+
+   function formValidation (){
+      const UsernameErr = {};
+      const EmailErr = {};
+      const PasswordErr={};
+      let isValid = true;
+
+      if(Username.trim().length<4){
+        UsernameErr.UsernameShort = "Invalid user name";
+        isValid =false;
+      }
+
+      //  if(Username || Email || Password === ""){
+      //   UsernameErr.UsernameShort = "Username champ is Empty ";
+      //   EmailErr.EmailSolve = " Email champ is Empty ";
+      //   PasswordErr.PasswordSolve = "Pssword champ is Empty "
+      //  }
+       
+      if(!Email.includes("@gmail.com")){
+        EmailErr.EmailSolve = "Inccorect Email ";
+      }
+
+      if(Password.trim().length<5){
+        PasswordErr.PasswordSolve = "Invalid Password ";
+      }
+
+      setUserNameErr(UsernameErr);
+      setemailErr(EmailErr);
+      setPasswordErr(PasswordErr);
+
+    if(isValid){
+      Register();
+    }
+      return isValid;
+    }
+
+const Register = ()=>{
+
 return fetch('http://localhost:51858/api/authenticate/register', {
         method: 'POST', 
         headers: {
@@ -101,76 +204,47 @@ return fetch('http://localhost:51858/api/authenticate/register', {
         },
         body: JSON.stringify({Username ,Email ,Password})
       })
-        .then(data => data.json())
+        .then(data =>  data.json())
     }
-
-
-    const validate = values => {
-      const errors = {};
     
-      if (!values.Username) {
-        errors.Username = 'Required';
-      } else if (values.Username.length > 15) {
-        errors.Username = 'Must be 15 characters or less';
-      }
-    
-      if (!values.Email) {
-        errors.Email = 'Required';
-      } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.Email)) {
-        errors.Email = 'Invalid email address';
-      }
-      if (!values.Password) {
-        errors.Password = 'Required';
-      } else if (values.Username.length > 10) {
-        errors.Email = 'Invalid password';
-      }
-      return errors;
-    };
-    
-    const SignupForm = () => {
-      const formik = useFormik({
-        initialValues: {
-          Username: '',
-          email: '',
-          Password:'',
-
-        },
-        validate,
-        onSubmit: values => {
-          alert(JSON.stringify(values, null, 2));
-        },
-      });
 return(
 <React.Fragment>
-  <form onSubmit={formik.handleSubmit}>
-      <label for='fullname'>FULL NAME</label>
-      <input type='text' name="Username" value = {formik.values.Username} onChange={name => setfullName(name.currentTarget.value )  (formik.handleChange) }onBlur={formik.handleBlur} id='fullname' />
-      {formik.touched.Username && formik.errors.Username ? (
-         <div>{formik.errors.Username}</div>
-       ) : null}
-      <label  for='email'>Email</label>
-      <input type='email' name="email" value={formik.values.email} onChange={email =>  setemail(email.currentTarget.value) (formik.handleChange)} onBlur={formik.handleBlur} id='email' required/>
-      {formik.touched.email && formik.errors.email ? (
-         <div>{formik.errors.email}</div>
-       ) : null}
-      <label for='password'>PASSWORD</label>
-      <input type='password'  name="Password" value={formik.values.Password} onChange={pass => setpassword(pass.currentTarget.value) (formik.handleChange)}  onBlur={formik.handleBlur}id='password' className="password" required/>
-      {formik.touched.Password && formik.errors.Password ? (
-         <div>{formik.errors.Password}</div>
-       ) : null}
-      
-      <label for='confirmationpassword'>CONFIRMATION PASSWORD</label>
-      <input type='password'  id='confirmationpassword' required/>
- 
-      <input onClick={register} value='submit' className='submit'/> 
-  </form>
+
+    <form onSubmit={onSubmit} >
+     
+    <label htmlfor='Username'>FULL NAME</label>
+           <input type='text' name="Username"  value = {Username}  onChange={Username => setUserName(Username.currentTarget.value)}  
+             id='Username'/>
+     
+         {Object.keys(UsernameErr).map((key)=>{
+           return <div style={{color : "red" , fontSize: 15}}> {UsernameErr[key]}</div>
+         })}
+
+         
+           <labe   htmlfor='email'>Email</labe>
+           <input type='text' value={Email}  onChange={Email=> setemail(Email.currentTarget.value)}  
+             id='email'  />
+           {Object.keys(EmailErr).map((key)=>{
+           return <div style={{color : "red" , fontSize: 15  }}> {EmailErr[key]}</div>
+         })}
+          
+           <label  htmlfor='password'>PASSWORD</label>
+           <input type='password' value={Password}  onChange={Password => setpassword(Password.currentTarget.value) }  
+            id='password' />
+             {Object.keys(PasswordErr).map((key)=>{
+           return <div style={{color : "red" , fontSize: 15  }}> {PasswordErr[key]}</div>
+            })}
+         
+           <label  htmlfor='confirmationpassword'>CONFIRMATION PASSWORD</label>
+           <input type='password'  id='confirmationpassword'/>
+           <input onClick={ formValidation}   value='submit' className='submit'/> 
+    </form>
  </React.Fragment>
 
-  )
-
-}
-}
-
-export default App ;
+  );
+  }
+    
 
 
+  
+export default Auth ;

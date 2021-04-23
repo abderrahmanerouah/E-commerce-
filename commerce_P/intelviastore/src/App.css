@@ -10,7 +10,17 @@ html,body,body * {
 
 
 }
+.nvb {
 
+  margin-top:-80px;
+  width: 130%;
+  margin-left:-16% ;
+}
+
+.navb{
+
+  width: 100%;
+}
 body{
   background-image: url(build.jpg);
   background-size: cover;
@@ -28,7 +38,7 @@ body{
 }
 
 .intelvia-wrapper{
-  height: 560px;
+  height: 630px;
   width :500px;
   margin-left: auto;
   margin-right: auto;
