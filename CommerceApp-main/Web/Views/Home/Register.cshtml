@@ -1,0 +1,71 @@
+﻿@{
+    Layout = "";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login</title>
+    <script src="~/js/jquery.min.js"></script>
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+    <script src="code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script src="~/js/site.js"></script>
+    <!------ Include the above in your HEAD tag ---------->
+</head>
+<body>
+    <div class="container">
+        <div class="row" style="margin-top:150px;">
+            <div class="col-md-4 col-md-offset-4">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Register</h3>
+                    </div>
+                    <div class="panel-body">
+                        <form asp-controller="Home" asp-action="Register" method="post">
+                            <fieldset>
+                                <div class="form-group">
+                                    <input class="form-control" placeholder="User name" id="txtUserName" name="UserName" type="text" />
+                                </div>
+
+                                <div class="form-group">
+                                    <input class="form-control" placeholder="Email" name="Email" type="email" />
+                                </div>
+                                <div class="form-group">
+                                    <input class="form-control" placeholder="Password" id="password" name="Password" type="Password" />
+                                </div>
+
+                                <div class="form-group">
+                                    <input class="form-control" id="confirm_password" placeholder="Confirmation Password"  type="Password"  />
+                                </div>
+
+                                <input id="btnLogin2" class="btn btn-lg btn-success btn-block" type="submit" value="Register">
+                            </fieldset>
+                            <div class="text-danger text-center">
+                                @ViewBag.Message
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+
+        var password = document.getElementById("password")
+            , confirm_password = document.getElementById("confirm_password");
+
+        function validatePassword() {
+            if (password.value != confirm_password.value) {
+                confirm_password.setCustomValidity("Passwords Don't Match");
+            } else {
+                confirm_password.setCustomValidity('');
+            }
+        }
+
+        password.onchange = validatePassword;
+        confirm_password.onkeyup = validatePassword;
+    </script>
+</body>
+</html>

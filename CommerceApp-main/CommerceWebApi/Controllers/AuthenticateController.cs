@@ -72,7 +72,7 @@ namespace CommerceWebApi.Controllers
                     roles = roles
                 });
             }
-            return BadRequest(new { message = "Giriş bilgileri hatalı" });
+            return BadRequest(new { message = "invalid user name or password" });
         }
 
         [HttpPost]

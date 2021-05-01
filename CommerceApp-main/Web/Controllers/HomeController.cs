@@ -29,6 +29,72 @@ namespace Web.Controllers
             return View();
         }
 
+
+
+
+        [AllowAnonymous]
+        [HttpGet]
+        public IActionResult Register()
+        {
+            return View();
+        }
+
+        [AllowAnonymous]
+        [HttpPost]
+        public async Task<IActionResult> Register(RegisterModel registerModel)
+        {
+            
+            string message = string.Empty;
+            ActionResult result;
+            HttpClient client = apiHelper.Initial();
+            client.DefaultRequestHeaders.Accept.Clear();
+            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            string serailizeddto = JsonConvert.SerializeObject(registerModel);
+            var inputMessage = new HttpRequestMessage
+            {
+                Method = HttpMethod.Get,
+                Content = new StringContent(serailizeddto, Encoding.UTF8, "application/json")
+            };
+            HttpResponseMessage responseMessage = await client.PostAsync("/api/authenticate/Register", inputMessage.Content);
+            var responseJson = await responseMessage.Content.ReadAsStringAsync();
+            var jObject = JObject.Parse(responseJson);
+
+            if (responseMessage.StatusCode == System.Net.HttpStatusCode.OK)
+            {
+             
+                message = jObject.GetValue("message").ToString();
+           
+
+                var claims = new List<Claim>();
+                claims.Add(new Claim(ClaimTypes.Name, registerModel.UserName,  ClaimValueTypes.String));
+              
+             
+                var userIdentity = new ClaimsIdentity("UserIdentity");
+                userIdentity.AddClaims(claims);
+                var userPrincipal = new ClaimsPrincipal(userIdentity);
+                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
+                  userPrincipal,
+                  new AuthenticationProperties
+                  {
+                      ExpiresUtc = DateTime.UtcNow.AddMinutes(20),
+                      IsPersistent = false,
+                      AllowRefresh = false
+                  });
+
+                CookieOptions cookie = new CookieOptions();
+                cookie.Expires = DateTime.Now.AddYears(10);
+             
+
+                result = RedirectToAction("Login", "Home");
+            }
+            else
+            {
+                ViewBag.Message = jObject.GetValue("message").ToString();
+                result = View(registerModel);
+            }
+
+            return result;
+        }
         [AllowAnonymous]
         [HttpGet]
         public IActionResult Login()

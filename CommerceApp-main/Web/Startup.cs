@@ -23,6 +23,7 @@ namespace Web
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
             .AddCookie(options =>
             {
+
                 options.LoginPath = "/Home/Login";
                 options.AccessDeniedPath = "/Home/AccessDenied";
             });

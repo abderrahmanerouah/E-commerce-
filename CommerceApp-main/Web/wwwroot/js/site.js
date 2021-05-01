@@ -59,7 +59,7 @@
                     //location.href = "/Home/Index";
                 }
                 else {
-                    alert("Yanlış Username veya Password Girdiniz.");
+                    alert("host probleme");
                 }
 
                 //console.log( result);
