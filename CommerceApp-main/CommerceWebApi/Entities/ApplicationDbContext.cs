@@ -12,5 +12,7 @@ namespace CommerceWebApi.Entities
         public DbSet<Product> Products { get; set; }
         public DbSet<Category> Categories { get; set; }
         public virtual DbSet<spProductItem> spProductItems { get; set; }
+        public DbSet<Order> Orders { get; set; }
+
     }
 }

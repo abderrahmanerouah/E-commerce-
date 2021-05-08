@@ -104,6 +104,34 @@ namespace CommerceWebApi.Migrations
                     b.ToTable("Categories");
                 });
 
+            modelBuilder.Entity("CommerceWebApi.Entities.Order", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("nameOrder")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("price")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("productsId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("userId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("productsId");
+
+                    b.HasIndex("userId");
+
+                    b.ToTable("Orders");
+                });
+
             modelBuilder.Entity("CommerceWebApi.Entities.Product", b =>
                 {
                     b.Property<int>("Id")
@@ -307,6 +335,21 @@ namespace CommerceWebApi.Migrations
                         .HasForeignKey("ParentId");
 
                     b.Navigation("Parent");
+                });
+
+            modelBuilder.Entity("CommerceWebApi.Entities.Order", b =>
+                {
+                    b.HasOne("CommerceWebApi.Entities.Product", "products")
+                        .WithMany()
+                        .HasForeignKey("productsId");
+
+                    b.HasOne("CommerceWebApi.Entities.ApplicationUser", "user")
+                        .WithMany()
+                        .HasForeignKey("userId");
+
+                    b.Navigation("products");
+
+                    b.Navigation("user");
                 });
 
             modelBuilder.Entity("CommerceWebApi.Entities.Product", b =>

@@ -16,6 +16,8 @@ namespace CommerceWebApi.AutoMappers
             CreateMap<ProductModel, spProductItem>();
             CreateMap<CategoryModel, Category>();
             CreateMap<Category, CategoryModel>();
+            CreateMap<Order, OrderModel>();
+            CreateMap<OrderModel, Order>();
         }
     }
 }

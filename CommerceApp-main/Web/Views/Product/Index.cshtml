@@ -1,5 +1,6 @@
 ﻿@model IEnumerable<Web.Models.ProductModel>
 
+
 @if (ViewData.ModelState.ErrorCount == 0)
 {
     <div class="text-right">
@@ -58,11 +59,13 @@
                                 }
                             </td>
                             <td>
-                                    <a title="@item.Name.ToLower()" class="btn btn-dark btn-sm" href="/@item.GenerateCeoLink()/@item.Id">
-                                        Detail
-                                    </a>
-                                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-info btn-sm">Edit</a>
-                                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure?')">Delete</a>
+                                <a title="@item.Name.ToLower()" class="btn btn-dark btn-sm" href="/@item.GenerateCeoLink()/@item.Id">
+                                    Detail
+                                </a>
+                                @*if(@User.IsInRole("User")){}*@
+                                <a asp-action="Create" asp-controller="Order"  asp-route-id="@item.Id"  class="btn btn-info btn-sm">command</a>
+                                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-info btn-sm">Edit</a>
+                                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure?')">Delete</a>
                             </td>
                         </tr>
                     }
