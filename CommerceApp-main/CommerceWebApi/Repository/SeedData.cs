@@ -53,7 +53,7 @@ namespace CommerceWebApi.Repository
                 userList = context.Users.ToList();
             }
 
-            if (!context.UserRoles.Any())
+         /*   if (!context.UserRoles.Any())
             {
                 var user1Role1 = new IdentityUserRole<string>
                 {
@@ -83,7 +83,7 @@ namespace CommerceWebApi.Repository
                 context.UserRoles.Add(user2Role2);
                 context.SaveChanges();
             }
-
+*/
             var categoryList = new List<Category>();
             if (!context.Categories.Any())
             {

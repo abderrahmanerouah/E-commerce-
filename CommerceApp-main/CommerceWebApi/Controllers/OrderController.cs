@@ -3,11 +3,13 @@ using CommerceWebApi.Entities;
 using CommerceWebApi.Interfaces;
 using CommerceWebApi.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace CommerceWebApi.Controllers
@@ -20,32 +22,34 @@ namespace CommerceWebApi.Controllers
     {
         private IRepository<Order> repository;
         private readonly ApplicationDbContext applicationDbContext;
+        private readonly UserManager<ApplicationUser> userManager;
         private readonly IMapper mapper;
 
-        public OrderController(IRepository<Order> _repository, IMapper mapper, ApplicationDbContext applicationDbContext)
+        public OrderController(IRepository<Order> _repository, IMapper mapper, ApplicationDbContext applicationDbContext , UserManager<ApplicationUser> userManager)
         {
             this.repository = _repository;
             this.applicationDbContext = applicationDbContext;
             this.mapper = mapper;
+            this.userManager = userManager; 
         }
 
 
-
-
-        // GET api/<OrderController>/
-        [HttpGet("{id}")]
-        public ActionResult<OrderModel> Get(int id)
+        // GET api/<OrderController>
+        [HttpGet]
+        public IEnumerable<OrderModel> Get()
         {
-            Order result = repository.TableNoTracking.Where(p => p.Id == id).Include(p => p.products).FirstOrDefault();
+            List<OrderModel> result = new List<OrderModel>();
+            var orders = applicationDbContext.Orders.FromSqlRaw("select * from Orders");
 
-            OrderModel Order = mapper.Map<OrderModel>(result);
-
-            if (result == null)
+   
+            foreach (var item in orders)
             {
-                return NotFound();
+                result.Add(mapper.Map<OrderModel>(item));
             }
-            return Order;
+            return result;
         }
+
+  
 
         // POST api/<OrderController>
         [HttpPost]
@@ -53,14 +57,26 @@ namespace CommerceWebApi.Controllers
         {
             if (!ModelState.IsValid)
                 return BadRequest("Invalid data.");
-            Order order = mapper.Map<Order>(OrderModel);
+
+
+       
+            string userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value; 
+            var user =  applicationDbContext.Users.FindAsync(userId).Result;
+            var product = applicationDbContext.Products.FindAsync(OrderModel.productId).Result;
+
+            Order order = new Order { user = user,
+                products = product  
+            };
+
+            
+            
             repository.Insert(order);
 
             return Ok();
         }
 
 
-
+           
         // DELETE api/<OrderController>/
         [HttpDelete("{id}")]
         public void Delete(int id)

@@ -112,7 +112,7 @@ namespace Web.Controllers
             }
             return productList;
         }
-
+      
         public async Task<IActionResult> Delete(int id)
         {
             HttpClient client = apiHelper.Initial();
@@ -129,7 +129,7 @@ namespace Web.Controllers
             }
             return RedirectToAction("Index");
         }
-
+        
         public async Task<IActionResult> Detail(int id)
         {
             HttpClient client = apiHelper.Initial();
@@ -151,7 +151,7 @@ namespace Web.Controllers
             }
             return RedirectToAction("Index");
         }
-
+      
         public async Task<IActionResult> Edit(int id)
         {
             IEnumerable<CategoryModel> categories = await GetCategories();
@@ -177,6 +177,8 @@ namespace Web.Controllers
             return RedirectToAction("Index");
         }
 
+
+   
         [HttpPost]
         public async Task<IActionResult> Edit(ProductModel productModel, IFormFile file)
         {

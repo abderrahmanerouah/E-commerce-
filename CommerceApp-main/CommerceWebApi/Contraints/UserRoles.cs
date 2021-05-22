@@ -7,9 +7,8 @@ namespace CommerceWebApi.Contraints
 {
     public class UserRoles
     {
-        public const string Normal = "Normal";
-        public const string CategoryManagement = "CategoryManagement";
-        public const string ProductView = "product_view";
+        public const string Admin = "Admin";
+        public const string User = "User";
 
     }
 }

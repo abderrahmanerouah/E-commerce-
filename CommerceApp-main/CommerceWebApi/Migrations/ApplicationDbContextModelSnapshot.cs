@@ -111,12 +111,6 @@ namespace CommerceWebApi.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("nameOrder")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("price")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int?>("productsId")
                         .HasColumnType("int");
 

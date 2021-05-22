@@ -1,6 +1,9 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\Authentication",
+    "\\bin"
   ],
+  "SelectedNode": "\\obj",
   "PreviewInSolutionExplorer": false
 }

@@ -28,5 +28,6 @@
 
 
 <div class="text-right">
+    <a asp-action="Create" asp-controller="Order"  asp-route-id="@Model.Id" class="btn btn-info btn-sm">command</a>
     @Html.ActionLink("Back to List", "Index", "Product", null, new { @class = "btn btn-primary" })
 </div>

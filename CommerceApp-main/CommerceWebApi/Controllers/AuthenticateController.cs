@@ -41,7 +41,8 @@ namespace CommerceWebApi.Controllers
 
                 var authClaims = new List<Claim>
                 {
-                    new Claim(ClaimTypes.Name, user.UserName),
+                    new Claim(ClaimTypes.Name, user.UserName  ),
+                    new Claim(ClaimTypes.NameIdentifier, user.Id),
                     new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 };
 
@@ -75,6 +76,9 @@ namespace CommerceWebApi.Controllers
             return BadRequest(new { message = "invalid user name or password" });
         }
 
+
+
+
         [HttpPost]
         [Route("register")]
         public async Task<IActionResult> Register([FromBody] RegisterModel model)
@@ -95,10 +99,9 @@ namespace CommerceWebApi.Controllers
 
             return Ok(new Response { Status = "Success", Message = "User created successfully!" });
         }
-
         [HttpPost]
         [Route("register-admin")]
-        public async Task<IActionResult> RegisterUser([FromBody] RegisterModel model)
+        public async Task<IActionResult> RegisterAdmin([FromBody] RegisterModel model)
         {
             var userExists = await userManager.FindByNameAsync(model.Username);
             if (userExists != null)
@@ -114,21 +117,18 @@ namespace CommerceWebApi.Controllers
             if (!result.Succeeded)
                 return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "User creation failed! Please check user details and try again." });
 
-            if (!await roleManager.RoleExistsAsync(UserRoles.Normal))
-                await roleManager.CreateAsync(new IdentityRole(UserRoles.Normal));
+            if (!await roleManager.RoleExistsAsync(UserRoles.Admin))
+                await roleManager.CreateAsync(new IdentityRole(UserRoles.Admin));
+            if (!await roleManager.RoleExistsAsync(UserRoles.User))
+                await roleManager.CreateAsync(new IdentityRole(UserRoles.User));
 
-            if (!await roleManager.RoleExistsAsync(UserRoles.ProductView))
-                await roleManager.CreateAsync(new IdentityRole(UserRoles.ProductView));
-
-            if (!await roleManager.RoleExistsAsync(UserRoles.CategoryManagement))
-                await roleManager.CreateAsync(new IdentityRole(UserRoles.CategoryManagement));
-
-            if (await roleManager.RoleExistsAsync(UserRoles.ProductView))
+            if (await roleManager.RoleExistsAsync(UserRoles.Admin))
             {
-                await userManager.AddToRoleAsync(user, UserRoles.ProductView);
+                await userManager.AddToRoleAsync(user, UserRoles.Admin);
             }
 
             return Ok(new Response { Status = "Success", Message = "User created successfully!" });
         }
+
     }
 }

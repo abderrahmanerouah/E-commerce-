@@ -52,7 +52,7 @@ namespace Web
 
             app.UseStaticFiles();
             app.UseCookiePolicy();
-            app.UseSession();        
+            app.UseSession();
             app.UseRouting();
 
             app.UseAuthentication();
